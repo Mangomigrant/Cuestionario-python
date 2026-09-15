@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cuestionario</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            min-height: 100vh;
+            display: grid;
+            place-items: center;
+            padding: 24px;
+            font-family: Arial, sans-serif;
+            background: #101827;
+            color: #ffffff;
+        }
+
+        .contenedor {
+            width: min(100%, 620px);
+            padding: 30px;
+            border-radius: 16px;
+            background: #1f2937;
+            box-shadow: 0 12px 35px rgba(0, 0, 0, 0.35);
+        }
+
+        h1 {
+            margin-top: 0;
+            color: #fbbf24;
+            text-align: center;
+        }
+
+        .advertencia {
+            padding: 14px;
+            border-radius: 10px;
+            color: #fecaca;
+            background: #7f1d1d;
+            text-align: center;
+        }
+
+        label {
+            display: block;
+            margin-top: 18px;
+            margin-bottom: 7px;
+            font-weight: bold;
+            color: #93c5fd;
+        }
+
+        input,
+        select,
+        textarea {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #4b5563;
+            border-radius: 8px;
+            font-size: 16px;
+            color: #111827;
+            background: #ffffff;
+        }
+
+        textarea {
+            min-height: 95px;
+            resize: vertical;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 24px;
+            padding: 14px;
+            border: 0;
+            border-radius: 8px;
+            font-size: 16px;
+            font-weight: bold;
+            color: white;
+            background: #16a34a;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #15803d;
+        }
+
+        #resultado {
+            display: none;
+            margin-top: 24px;
+            padding: 18px;
+            border-radius: 10px;
+            background: #052e16;
+            color: #dcfce7;
+        }
+
+        .nota {
+            color: #d1d5db;
+            font-size: 13px;
+        }
+    </style>
+</head>
+
+<body>
+    <main class="contenedor">
+        <h1>Cuestionario</h1>
+
+        <p class="advertencia">
+            ALERTA: completa todos los campos para terminar el cuestionario.
+        </p>
+
+        <form id="formulario">
+            <label for="nombre">1. Escribe tu nombre</label>
+            <input id="nombre" type="text" required>
+
+            <label for="edad">2. Escribe tu edad</label>
+            <input id="edad" type="number" min="1" required>
+
+            <label for="direccion">3. Escribe tu dirección</label>
+            <input id="direccion" type="text" required>
+
+            <label for="curp">4. Escribe tu CURP</label>
+            <input
+                id="curp"
+                type="text"
+                minlength="18"
+                maxlength="18"
+                required
+            >
+            <p class="nota">Debe tener exactamente 18 caracteres.</p>
+
+            <label for="linea">5. Escribe tu número de línea</label>
+            <input
+                id="linea"
+                type="text"
+                inputmode="numeric"
+                pattern="[0-9]{10}"
+                minlength="10"
+                maxlength="10"
+                required
+            >
+            <p class="nota">Debe tener exactamente 10 dígitos.</p>
+
+            <label for="pagar">6. ¿Te gustaría pagar para desbloquear tu línea?</label>
+            <select id="pagar" required>
+                <option value="">Selecciona una opción</option>
+                <option value="Sí">Sí</option>
+                <option value="No">No</option>
+            </select>
+
+            <label for="tarjeta">7. Escribe un número de tarjeta ficticio</label>
+            <input
+                id="tarjeta"
+                type="text"
+                inputmode="numeric"
+                pattern="[0-9]{16}"
+                minlength="16"
+                maxlength="16"
+                required
+            >
+            <p class="nota">
+                Usa datos ficticios. Debe contener exactamente 16 dígitos.
+            </p>
+
+            <label for="ine">8. Escribe tu clave de lector</label>
+            <input
+                id="ine"
+                type="text"
+                minlength="18"
+                maxlength="18"
+                required
+            >
+            <p class="nota">Debe tener exactamente 18 caracteres.</p>
+
+            <label for="comentario">9. Escribe un comentario final</label>
+            <textarea id="comentario" required></textarea>
+
+            <button type="submit">Enviar cuestionario</button>
+        </form>
+
+        <section id="resultado"></section>
+    </main>
+
+    <script>
+        const formulario = document.getElementById("formulario");
+        const resultado = document.getElementById("resultado");
+
+        formulario.addEventListener("submit", function (evento) {
+            evento.preventDefault();
+
+            const nombre = document.getElementById("nombre").value.trim();
+            const edad = document.getElementById("edad").value;
+            const direccion = document.getElementById("direccion").value.trim();
+            const curp = document.getElementById("curp").value.trim();
+            const linea = document.getElementById("linea").value.trim();
+            const pagar = document.getElementById("pagar").value;
+            const tarjeta = document.getElementById("tarjeta").value.trim();
+            const ine = document.getElementById("ine").value.trim();
+            const comentario = document.getElementById("comentario").value.trim();
+
+            if (curp.length !== 18) {
+                alert("La CURP debe tener exactamente 18 caracteres.");
+                return;
+            }
+
+            if (!/^[0-9]{10}$/.test(linea)) {
+                alert("El número de línea debe tener exactamente 10 dígitos.");
+                return;
+            }
+
+            if (!/^[0-9]{16}$/.test(tarjeta)) {
+                alert("El número de tarjeta debe tener exactamente 16 dígitos.");
+                return;
+            }
+
+            if (ine.length !== 18) {
+                alert("La clave de lector debe tener exactamente 18 caracteres.");
+                return;
+            }
+
+            resultado.style.display = "block";
+            resultado.innerHTML = `
+                <h2>Cuestionario completado</h2>
+                <p><strong>Nombre:</strong> ${nombre}</p>
+                <p><strong>Edad:</strong> ${edad}</p>
+                <p><strong>Dirección:</strong> ${direccion}</p>
+                <p><strong>CURP:</strong> ${curp}</p>
+                <p><strong>Número de línea:</strong> ${linea}</p>
+                <p><strong>¿Te gustaría pagar?:</strong> ${pagar}</p>
+                <p><strong>Número de tarjeta:</strong> ${tarjeta}</p>
+                <p><strong>Clave de lector:</strong> ${ine}</p>
+                <p><strong>Comentario:</strong> ${comentario}</p>
+            `;
+
+            formulario.style.display = "none";
+        });
+    </script>
+</body>
+</html>
